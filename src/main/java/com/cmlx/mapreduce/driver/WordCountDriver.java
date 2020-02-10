@@ -9,6 +9,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.CombineTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 
 import java.io.IOException;
@@ -24,6 +25,10 @@ public class WordCountDriver {
         //1、获取配置信息以及封装任务（获取Job对象）
         Configuration configuration = new Configuration();
         Job job = Job.getInstance(configuration);
+
+        //** CombinInputFormat切片机制
+        job.setInputFormatClass(CombineTextInputFormat.class);
+        CombineTextInputFormat.setMaxInputSplitSize(job,100);
 
         //2、设置jar存储路径
         job.setJarByClass(WordCountDriver.class);
